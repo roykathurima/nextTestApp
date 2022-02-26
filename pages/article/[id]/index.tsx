@@ -11,7 +11,7 @@ const Back = styled.button`
   cursor: pointer;
 `;
 
-export default ({ article }: any) => {
+const Articl = ({ article }: any) => {
   const router = useRouter();
   const { title, body }: Article = article;
   return (
@@ -62,3 +62,5 @@ export const getStaticPaths = async () => {
     fallback: false,
   };
 };
+
+export default Articl;
