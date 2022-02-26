@@ -23,7 +23,7 @@ const Home: NextPage = ({ articles }: any) => {
     <>
       <h2>Home Page</h2>
       {articles.map(({ id, title, body }: Article) => (
-        <Link href="/article/[id]" as={`/article/${id}`}>
+        <Link key={id} href="/article/[id]" as={`/article/${id}`}>
           <Card>
             <h3>{title}</h3>
             <p>{body}</p>
@@ -36,6 +36,7 @@ const Home: NextPage = ({ articles }: any) => {
 
 export default Home;
 
+// Data is Fetched at Buildtime
 export const getStaticProps = async () => {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts?_limit=10`
