@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
+import { Article } from "../..";
 
 const Back = styled.button`
   background-color: green;
@@ -12,7 +13,7 @@ const Back = styled.button`
 
 export default ({ article }: any) => {
   const router = useRouter();
-  const { title, body } = article;
+  const { title, body }: Article = article;
   return (
     <>
       <h3>{title}</h3>
@@ -23,9 +24,21 @@ export default ({ article }: any) => {
 };
 
 // Fetches the data at the time it is requested as opposed to pre-fetching at buildtime
-export const getServerSideProps = async (context: any) => {
-  // Context allows us to get the id of whats in the URL
-  //   Context can also be passed to the getStatic Props
+// export const getServerSideProps = async (context: any) => {
+//   // Context allows us to get the id of whats in the URL
+//   //   Context can also be passed to the getStatic Props
+//   const { id } = context.params;
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+//   const article = await res.json();
+
+//   return {
+//     props: {
+//       article,
+//     },
+//   };
+// };
+
+export const getStaticProps = async (context: any) => {
   const { id } = context.params;
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
   const article = await res.json();
@@ -34,5 +47,18 @@ export const getServerSideProps = async (context: any) => {
     props: {
       article,
     },
+  };
+};
+
+export const getStaticPaths = async () => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
+  const articles = await res.json();
+  const paths = articles
+    .map(({ id }: Article) => id)
+    .map((idx: number) => ({ params: { id: idx.toString() } }));
+  return {
+    paths,
+    // If we access sumn that doesn't exist, return a 404
+    fallback: false,
   };
 };

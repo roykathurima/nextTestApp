@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import styled from "@emotion/styled";
-interface Article {
+export interface Article {
   id: number;
   userId: number;
   body: string;
